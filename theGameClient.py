@@ -20,7 +20,7 @@ typewords = ""
 
 serverip = "75.175.26.183"
 serverport = 7778
-serverip = "10.0.1.18"
+#serverip = "10.0.1.18"
 
 s = socket.socket(
     socket.AF_INET, socket.SOCK_STREAM)

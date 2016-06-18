@@ -5,10 +5,10 @@ import math
 from decimal import *
 getcontext().prec = 4
 
-import pygame
-import json
-from pygame.locals import *
-pygame.init()
+#import pygame
+#import json
+#from pygame.locals import *
+#pygame.init()
 
 #pygame stuff----------------------------------------------------------
 #screenX, screenY = 600, 600
