@@ -84,6 +84,73 @@ while running:
                 typewords += "w"
             if event.key == K_e:
                 typewords += "e"
+            if event.key == K_r:
+                typewords += "r"
+            if event.key == K_t:
+                typewords += "t"
+            if event.key == K_y:
+                typewords += "y"
+            if event.key == K_u:
+                typewords += "u"
+            if event.key == K_i:
+                typewords += "i"
+            if event.key == K_o:
+                typewords += "o"
+            if event.key == K_p:
+                typewords += "p"
+            if event.key == K_a:
+                typewords += "a"
+            if event.key == K_s:
+                typewords += "s"
+            if event.key == K_d:
+                typewords += "d"
+            if event.key == K_f:
+                typewords += "f"
+            if event.key == K_g:
+                typewords += "g"
+            if event.key == K_h:
+                typewords += "h"
+            if event.key == K_j:
+                typewords += "j"
+            if event.key == K_k:
+                typewords += "k"
+            if event.key == K_l:
+                typewords += "l"
+            if event.key == K_z:
+                typewords += "z"
+            if event.key == K_x:
+                typewords += "x"
+            if event.key == K_c:
+                typewords += "c"
+            if event.key == K_v:
+                typewords += "v"
+            if event.key == K_b:
+                typewords += "b"
+            if event.key == K_n:
+                typewords += "n"
+            if event.key == K_m:
+                typewords += "m"
+                
+            if event.key == K_1:
+                typewords += "1"
+            if event.key == K_2:
+                typewords += "2"
+            if event.key == K_3:
+                typewords += "3"
+            if event.key == K_4:
+                typewords += "4"
+            if event.key == K_5:
+                typewords += "5"
+            if event.key == K_6:
+                typewords += "6"
+            if event.key == K_7:
+                typewords += "7"
+            if event.key == K_8:
+                typewords += "8"
+            if event.key == K_9:
+                typewords += "9"
+            if event.key == K_0:
+                typewords += "0"
             
             #more advanced
             if event.key == K_BACKSPACE and len(typewords) > 0:
