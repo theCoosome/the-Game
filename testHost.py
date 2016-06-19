@@ -41,6 +41,7 @@ class player(object):
         self.port = address[1]
         #game stuff
         self.name = "Player"
+        self.connected = True
         
     def myreceive(self):
         #Recieve quantity of words
@@ -50,21 +51,22 @@ class player(object):
             chunk = self.s.recv(min(4 - bytes_recd, 2048))
             if chunk == '':
                 print self.name + " has disconnected"
-                break
+                self.connected = False
             chunks.append(chunk)
             bytes_recd = bytes_recd + len(chunk)
-        MSGLEN = int(''.join(chunks))
-        #recieve the words
-        chunks = []
-        bytes_recd = 0
-        while bytes_recd < MSGLEN:
-            chunk = self.s.recv(min(MSGLEN - bytes_recd, 2048))
-            if chunk == '':
-                print self.name + " has disconnected"
-                break
-            chunks.append(chunk)
-            bytes_recd = bytes_recd + len(chunk)
-        return ''.join(chunks)
+        if self.connected:
+            MSGLEN = int(''.join(chunks))
+            #recieve the words
+            chunks = []
+            bytes_recd = 0
+            while bytes_recd < MSGLEN:
+                chunk = self.s.recv(min(MSGLEN - bytes_recd, 2048))
+                if chunk == '':
+                    print self.name + " has disconnected"
+                    self.connected = False
+                chunks.append(chunk)
+                bytes_recd = bytes_recd + len(chunk)
+            return ''.join(chunks)
         
         
     def sendinfo(self, typewords):
@@ -99,18 +101,25 @@ serversocket.listen(5)
 
 connecting = raw_input("Expected turnout:   ")
 players = []
+for i in range(int(connecting)):
+    print "Accepting connections"
+    #accept connections
+    (clientsocket, address) = serversocket.accept()
+    thisplayer = player(clientsocket, address)
+    print "Connected "+str(thisplayer.ip)+" on port "+str(thisplayer.port)
+    thisplayer.name = thisplayer.myreceive()
+    players.append(thisplayer)
+    print "Player "+str(len(players))+" now using alias " + players[len(players)-1].name
+print "Connected "+str(len(players))+" players total."
 
 running = True
 while running:
-    #accept connections
-    print "Accepting connections"
-    (clientsocket, address) = serversocket.accept()
-    thisplayer = player(clientsocket, address)
-    #do something with clientsocket
-    print "Connected "+str(thisplayer.ip)+" on port "+str(thisplayer.port)
-    print thisplayer.myreceive()
-    thisplayer.sendinfo("Confirming hl3")
+    for i in players:
+        print i.myreceive()
+        #i.sendinfo("Confirming hl3")
+        if i.connected == False:
+            players.remove(i)
     
-    
-    
+    if len(players) <= 0:
+        running = False
 print "Done"
