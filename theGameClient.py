@@ -33,7 +33,7 @@ def cuttofour(number):
         number = number[:4]
     if leng < 4:
         rand = 4-leng
-        print "splicing " + str(rand) + " leading zeros"
+        #print "splicing " + str(rand) + " leading zeros"
         for i in range(rand):
             number = "0"+number
     return number
@@ -60,27 +60,30 @@ def sendinfo(typewords):
         
 def myreceive():
     #Recieve quantity of words
+    global s
+    connected = True
     chunks = []
     bytes_recd = 0
-    while bytes_recd < 4:
-        chunk = self.s.recv(min(4 - bytes_recd, 2048))
+    while bytes_recd < 4 and connected:
+        chunk = s.recv(min(4 - bytes_recd, 2048))
         if chunk == '':
-            print self.name + " has disconnected"
-            break
+            print "Server has disconnected"
+            connected = False
         chunks.append(chunk)
         bytes_recd = bytes_recd + len(chunk)
-    MSGLEN = int(''.join(chunks))
-    #recieve the words
-    chunks = []
-    bytes_recd = 0
-    while bytes_recd < MSGLEN:
-        chunk = self.s.recv(min(MSGLEN - bytes_recd, 2048))
-        if chunk == '':
-            print self.name + " has disconnected"
-            break
-        chunks.append(chunk)
-        bytes_recd = bytes_recd + len(chunk)
-    return ''.join(chunks)
+    if connected:
+        MSGLEN = int(''.join(chunks))
+        #recieve the words
+        chunks = []
+        bytes_recd = 0
+        while bytes_recd < MSGLEN and connected:
+            chunk = s.recv(min(MSGLEN - bytes_recd, 2048))
+            if chunk == '':
+                print "Server has disconnected"
+                connected = False
+            chunks.append(chunk)
+            bytes_recd = bytes_recd + len(chunk)
+        return ''.join(chunks)
         
         
         
@@ -91,6 +94,8 @@ s.connect((serverip, serverport))
 print "Connected"
 name = raw_input("Name:  ")
 sendinfo(name)
+print "Waiting for server to start..."
+print myreceive()
 '''
 #bind the socket to a public host,
 # and a well-known port
@@ -112,7 +117,7 @@ Screen = pygame.display.set_mode((screenX, screenY))
 running = True
 while running:
     Screen.fill(White)
-    
+    tosend = "$"
     #Get external (server) input
     
     dialog = font.render("The Game Client", True, Black)
@@ -187,14 +192,17 @@ while running:
                 capital = True
             if event.key == K_RETURN and len(typewords) > 0:
                 #--Send words-------------------------------------------------------------------------------------------------
-                sendinfo(typewords)
-                print "Sent "+typewords
+                tosend = typewords
+                #print "Sent "+typewords
                 typewords = ""
-                #print myreceive()
         if event.type == pygame.KEYUP:
             if event.key == K_LSHIFT or event.key == K_RSHIFT:
                 capital = False
     
+    sendinfo(tosend)
+    recieved = myreceive()
+    if recieved != "$":
+        print recieved
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(40)
 print "Done"

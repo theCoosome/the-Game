@@ -20,15 +20,15 @@ def getwords(input, quant):
             return words
             retreving = False
         else:
-            print "Missing "+str(quant-len(words))+" values"
+            prints("Missing "+str(quant-len(words))+" values")
             input = raw_input("Provide: ")
             
 class comms(object):
     def say(self, who, said):
-        print who.name + ": " + said
+        prints(who.name + ": " + said)
         
     def tell(self, teller, told, said):
-        print teller.name + " told " + told.name + ": " + said
+        prints(teller.name + " told " + told.name + ": " + said)
 comm = comms()
         
         
@@ -83,7 +83,7 @@ while True:
     else:
         #Only one word---------------------------------
         if word == "help":
-            print "haha not happening yet"
+            prints("haha not happening yet")
         else:
             comm.say(thisplayer, word)
 
