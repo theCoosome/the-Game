@@ -18,7 +18,7 @@ White = pygame.Color(255,255,255)
 typewords = ""
 capital = False
 
-serverip = "75.175.26.183"
+serverip = "63.225.86.64"
 serverport = 7778
 #serverip = "192.168.1.47"
 

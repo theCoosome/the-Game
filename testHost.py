@@ -126,8 +126,8 @@ while running:
     #Send to all players
     for i in players:
         i.tosend = tosend+"\n"+i.tosend
-        if tosend == "\n":
-            tosend = "$"
+        if i.tosend == "\n":
+            i.tosend = "$"
         i.sendinfo(i.tosend)
     
     if len(players) <= 0:
