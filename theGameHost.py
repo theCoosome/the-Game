@@ -93,6 +93,9 @@ serversocket.listen(5)
 
 
 connecting = raw_input("Expected turnout:   ")
+
+
+print socket.gethostbyname(socket.gethostname())
 players = []
 for i in range(int(connecting)):
     print "Accepting connections"
