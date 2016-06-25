@@ -96,7 +96,6 @@ def myreceive():
         
 s = socket.socket(
     socket.AF_INET, socket.SOCK_STREAM)
-
 s.connect((serverip, serverport))
 print "Connected"
 connected = True
@@ -122,17 +121,23 @@ def typing(thisevent, eventwanted, typing):
 
 Screen = pygame.display.set_mode((screenX, screenY))
 running = True
+typelist = []
 while running and connected:
+
     Screen.fill(White)
     tosend = "$"
     #Get external (server) input
     
     dialog = font.render("The Game Client", True, Black)
-    Screen.blit(dialog, [0,0])
+    Screen.blit(dialog, [20,0])
     dialog = font.render("Connected as: "+name, True, Black)
-    Screen.blit(dialog, [0,20])
+    Screen.blit(dialog, [20,20])
     dialog = font.render(typewords, True, Black)
-    Screen.blit(dialog, [0,100])
+    Screen.blit(dialog, [0,580])
+    for i in range(len(typelist)):
+        Screen.blit(typelist[i], [20,(i * 20) + 40])
+		
+		
     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -205,6 +210,7 @@ while running and connected:
                 #--Send words-------------------------------------------------------------------------------------------------
                 tosend = typewords
                 #print "Sent "+typewords
+                typelist.append(font.render(typewords, True, Black))
                 typewords = ""
             if event.key == K_ESCAPE:
                 running = False

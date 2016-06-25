@@ -152,7 +152,7 @@ def Interpret(word, sayer):
                     sayer.tosend = addtosend(sayer.tosend, i.name)
             else:
                 sayer.tosend = addtosend(sayer.tosend, "Unable to list "+thewords[1]+". Listable:\n-players")
-        
+                
         else:
             comm.say(sayer, word)
         
