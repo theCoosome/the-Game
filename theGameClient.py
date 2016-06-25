@@ -18,8 +18,7 @@ White = pygame.Color(255,255,255)
 typewords = ""
 capital = False
 
-serverip = "63.225.86.64"
-serverport = 7778
+
 #serverip = "192.168.1.47"
 
 
@@ -90,8 +89,17 @@ def myreceive():
 s = socket.socket(
     socket.AF_INET, socket.SOCK_STREAM)
 
+	
+#serverip = "63.225.86.64"
+serverip = raw_input("Server Ip:  ")
+#serverport = 7778
+serverport = int(raw_input("Server Port:  "))
+	
 s.connect((serverip, serverport))
+	
+	
 print "Connected"
+		
 name = raw_input("Name:  ")
 sendinfo(name)
 print "Waiting for server to start..."
@@ -115,17 +123,22 @@ def typing(thisevent, eventwanted, typing):
 
 Screen = pygame.display.set_mode((screenX, screenY))
 running = True
+typelist = []
 while running:
     Screen.fill(White)
     tosend = "$"
     #Get external (server) input
     
     dialog = font.render("The Game Client", True, Black)
-    Screen.blit(dialog, [0,0])
+    Screen.blit(dialog, [20,0])
     dialog = font.render("Connected as: "+name, True, Black)
-    Screen.blit(dialog, [0,20])
+    Screen.blit(dialog, [20,20])
     dialog = font.render(typewords, True, Black)
-    Screen.blit(dialog, [0,100])
+    Screen.blit(dialog, [0,580])
+    for i in range(len(typelist)):
+        Screen.blit(typelist[i], [20,(i * 20) + 40])
+		
+		
     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -194,6 +207,7 @@ while running:
                 #--Send words-------------------------------------------------------------------------------------------------
                 tosend = typewords
                 #print "Sent "+typewords
+                typelist.append(font.render(typewords, True, Black))
                 typewords = ""
         if event.type == pygame.KEYUP:
             if event.key == K_LSHIFT or event.key == K_RSHIFT:

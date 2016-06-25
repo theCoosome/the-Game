@@ -83,7 +83,12 @@ while True:
     else:
         #Only one word---------------------------------
         if word == "help":
-            prints("haha not happening yet")
+			prints("Current Commands:")
+			prints("say <message>")
+			prints("say something to everyone")
+			prints("tell <player> <message>")
+			prints("tell a player a message")
+			
         else:
             comm.say(thisplayer, word)
 
