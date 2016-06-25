@@ -1,5 +1,12 @@
 def prints(stuff):
     print stuff
+    
+def addtosend(thing, stuff):
+    if thing == "$" or thing == "":
+        thing = stuff
+    else:
+        thing += "\n"+stuff
+    return thing
 
 def getwords(input, quant):
     retreving = True
@@ -75,13 +82,25 @@ class player(object):
         self.equipRegions = [0, 1, 0, 2, 2]
         self.maxRegions = [3, 3, 2, 3, 2]
         
-    def equip(self, item):
-        success = True
-        for i in range(5):
-            if self.equipRegions[i]+item.equipRegions[i] > self.maxRegions[i]
-                success = False
-            
-            
+    #takes string of item name
+    def equip(self, word):
+        failedName, successEquip = True, True
+        for i in self.inventory:
+            if word.lower() == i.name.lower():
+                failedName = False
+                for x in range(5):
+                    if self.equipRegions[x]+i.equipRegions[x] > self.maxRegions[x]
+                        successEquip = False
+                if successEquip:
+                    equipped.append(i)
+                    inventory.remove(i)
+                    self.reStat()
+                    tosend = addtosend(tosend, self.name+" equipped "+word)
+                else:
+                    self.tosend = addtosend(self.tosend, "Not enough room to equip "+word)
+                break
+        if failedName:
+            self.tosend = addtosend(self.tosend, "No item in inventory called "+word)
         
     def reStat(self):
         #recalculate all stats based on items and anything else
