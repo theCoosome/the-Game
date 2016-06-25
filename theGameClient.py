@@ -141,64 +141,103 @@ while running and connected:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             #typing
-            if event.key == K_SPACE:
-                typewords += " "
-            typing(event, K_q, "q")
-            typing(event, K_w, "w")
-            typing(event, K_e, "e")
-            typing(event, K_r, "r")
-            typing(event, K_t, "t")
-            typing(event, K_y, "y")
-            typing(event, K_u, "u")
-            typing(event, K_i, "i")
-            typing(event, K_o, "o")
-            typing(event, K_p, "p")
-            typing(event, K_a, "a")
-            typing(event, K_s, "s")
-            typing(event, K_d, "d")
-            typing(event, K_f, "f")
-            typing(event, K_g, "g")
-            typing(event, K_h, "h")
-            typing(event, K_j, "j")
-            typing(event, K_k, "k")
-            typing(event, K_l, "l")
-            typing(event, K_z, "z")
-            typing(event, K_x, "x")
-            typing(event, K_c, "c")
-            typing(event, K_v, "v")
-            typing(event, K_b, "b")
-            typing(event, K_n, "n")
-            typing(event, K_m, "m")
-            if event.key == K_1:
-                typewords += "1"
-            if event.key == K_2:
-                typewords += "2"
-            if event.key == K_3:
-                typewords += "3"
-            if event.key == K_4:
-                typewords += "4"
-            if event.key == K_5:
-                typewords += "5"
-            if event.key == K_6:
-                typewords += "6"
-            if event.key == K_7:
-                typewords += "7"
-            if event.key == K_8:
-                typewords += "8"
-            if event.key == K_9:
-                typewords += "9"
-            if event.key == K_0:
-                typewords += "0"
-            if event.key == K_PERIOD:
-                typewords += "."
-            if event.key == K_COMMA:
-                typewords += ","
-            if event.key == K_MINUS:
-                typewords += "-"
-            if event.key == K_MINUS and capital:
-                typewords += "_"
-            if event.key == K_SLASH and capital:
-                typewords += "?"
+           if event.key == K_SPACE:
+				typewords += " "
+			typing(event, K_q, "q")
+			typing(event, K_w, "w")
+			typing(event, K_e, "e")
+			typing(event, K_r, "r")
+			typing(event, K_t, "t")
+			typing(event, K_y, "y")
+			typing(event, K_u, "u")
+			typing(event, K_i, "i")
+			typing(event, K_o, "o")
+			typing(event, K_p, "p")
+			typing(event, K_a, "a")
+			typing(event, K_s, "s")
+			typing(event, K_d, "d")
+			typing(event, K_f, "f")
+			typing(event, K_g, "g")
+			typing(event, K_h, "h")
+			typing(event, K_j, "j")
+			typing(event, K_k, "k")
+			typing(event, K_l, "l")
+			typing(event, K_z, "z")
+			typing(event, K_x, "x")
+			typing(event, K_c, "c")
+			typing(event, K_v, "v")
+			typing(event, K_b, "b")
+			typing(event, K_n, "n")
+			typing(event, K_m, "m")
+			if event.key == K_1:
+				typewords += "1"
+			if event.key == K_2:
+				typewords += "2"
+			if event.key == K_3:
+				typewords += "3"
+			if event.key == K_4:
+				typewords += "4"
+			if event.key == K_5:
+				typewords += "5"
+			if event.key == K_6:
+				typewords += "6"
+			if event.key == K_7:
+				typewords += "7"
+			if event.key == K_8:
+				typewords += "8"
+			if event.key == K_9:
+				typewords += "9"
+			if event.key == K_0:
+				typewords += "0"
+			if event.key == K_COLON:
+				typewords += ":"
+			if event.key == K_EQUALS:
+				typewords += "="
+			if event.key == K_PERIOD:
+				typewords += "."
+			if event.key == K_COMMA:
+				typewords += ","
+			if event.key == K_SEMICOLON:
+				typewords += ";"
+			if event.key == K_LESS:
+				typewords += "<"
+			if event.key == K_GREATER:
+				typewords += ">"
+			if event.key == K_:
+				typewords += "<"
+			if event.key == K_QUESTION:
+				typewords += "?"
+			if event.key == K_AT:
+				typewords += "@"
+			if event.key == K_LEFTBRACKET:
+				typewords += "["
+			if event.key == K_RIGHTBRACKET:
+				typewords += "]"
+			
+			if event.key == K_CARET:
+				typewords += "^"
+			if event.key == K_UNDERSCORE:
+				typewords += "_"
+			if event.key == K_EXCLAIM:
+				typewords += "!"
+			if event.key == K_QUOTEDBL:
+				typewords += "'"
+			if event.key == K_HASH:
+				typewords += "#"
+			if event.key == K_AMPERSAND:
+				typewords += "&"
+			if event.key == K_LEFTPAREN:
+				typewords += "("
+			if event.key == K_RIGHTPAREN:
+				typewords += ")"
+			if event.key == K_ASTERISK:
+				typewords += "*"
+			if event.key == K_PLUS:
+				typewords += "+"
+			if event.key == K_MINUS:
+				typewords += "-"
+			if event.key == K_SLASH:
+				typewords += "/"
             
             #more advanced
             if event.key == K_BACKSPACE and len(typewords) > 0:
