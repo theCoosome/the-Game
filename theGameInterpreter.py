@@ -57,11 +57,11 @@ class player(object):
         self.dfn = 0
         self.bsddev = 10
         self.ddev = 10
-        self.bshealval = 1
-        self.healval = 1
+        self.bsheal = 1
+        self.heal = 1
         self.hdev = 3
-        self.bsagil = [18, 100]
-        self.agil = [15, 100]
+        self.bsagil = 18
+        self.agil = [18, 100]
         self.lvl = 1
         self.bssane = 8
         self.sane = 8
@@ -71,21 +71,30 @@ class player(object):
         self.minionTree = []
         self.inventory = []
         self.equipped = []
-        #equip regions, if something is there
-        self.Rhead = False
-        self.Rtorso = False
-        self.RLhand = False
-        self.RRhand = False
-        self.Rlegs = False
-        self.Rfeet = False
+        #equip regions, how many things are there: head, torso, hands, legs, feet
+        self.equipRegions = [0, 1, 0, 2, 2]
+        self.maxRegions = [3, 3, 2, 3, 2]
         
     def equip(self, item):
-        pass
+        success = True
+        for i in range(5):
+            if self.equipRegions[i]+item.equipRegions[i] > self.maxRegions[i]
+                success = False
+            
+            
         
     def reStat(self):
         #recalculate all stats based on items and anything else
+        atkmod, ddevmod, dfnmod, agilmod, hpmod, healmod, sanemod = 0, 0, 0, 0, 0, 0, 0
         for i in self.equipped:
-            pass
+            atkmod, ddevmod, dfnmod, agilmod, hpmod, healmod, sanemod += i.atkmod, i.ddevmod, i.dfnmod, i.agilmod, i.hpmod, i.healmod, i.sanemod
+        self.atk = self.bsatk+atkmod
+        self.ddev = self.bsddev+ddevmod
+        self.dfn = self.bsdfn+dfnmod
+        self.agil = [self.bsagil+agilmod, 100]
+        self.maxhp = self.bsmaxhp+hpmod
+        self.heal = self.bsheal+healmod
+        self.sane = self.bssane+sanemod
 
     
 players = []
@@ -93,7 +102,8 @@ players.append(player("socket", ("localhost", 7778), "Coo"))
 players.append(player("socket", ("anotherone", 7778), "Siv"))
 players.append(player("socket", ("itsdatboi", 7778), "Ben"))
 
-
+itemframes = []
+itemframes.append([6, -1, 1, -1, 0, 0, [0, 0, ]])
 class Item(object):
     def __init__(self, atkmod, ddevmod, dfnmod, agilmod, hpmod, healmod, sanemod, eq, catag, name):
         #Descriptive
@@ -111,12 +121,7 @@ class Item(object):
         self.healmod = healmod
         self.sanemod = sanemod
         #equip regions, if it takes it up
-        self.Rhead = eq[0]
-        self.Rtorso = eq[1]
-        self.RLhand = eq[2]
-        self.RRhand = eq[3]
-        self.Rlegs = eq[4]
-        self.Rfeet = eq[5]
+        self.equipRegions = eq
 
 entityframes = []
 class entity(object):
