@@ -48,16 +48,34 @@ class player(object):
         self.connected = True
         self.tosend = ""
         #game stuff
-        self.catag = "Human"
+        self.catag = "player"
         self.name = "Player"
         self.status = "Doing quite well, actually"
         #stats
+		self.race = "Human"
+		
+		#Speccialties are skills the player is good at, such as mining, proficiency with a weapon, or house building. 
+		#It is in the form of <name of skill>:<level of skill>
+		self.specialties = {}
+		#<type> <amount>
+		self.resistances = {}
+		#Hp is actually the blood level of the player
         self.hp = 100
         self.bsmaxhp = 100
         self.maxhp = 100
-        #self.mana = 15
-        #self.bsmaxmana = 15  #oh god this is gonna be painful
-        #self.maxmana = 15
+		#Limbs can be taken out of the list if the player loses them
+		self.limbs = ["rightarm", "leftarm", "leftleg", "rightleg"]
+		#if the player loses thier main hand, they take a penalty to atking
+		self.mainhand = "rightarm"
+		#MAGIX
+        self.mana = 15
+        self.bsmaxmana = 15  #oh god this is gonna be painful
+        self.maxmana = 15
+		#managen per turn
+		self.managen = 1
+		
+		
+		#atks
         self.bsatk = 8
         self.atk = 8
         self.bsdfn = 0
@@ -72,7 +90,7 @@ class player(object):
         self.lvl = 1
         self.bssane = 8
         self.sane = 8
-        self.trueSane = 0
+      
         #other
         self.minions = []
         self.minionTree = []
@@ -81,6 +99,7 @@ class player(object):
         #equip regions, how many things are there: head, torso, hands, legs, feet
         self.equipRegions = [0, 1, 0, 2, 2]
         self.maxRegions = [3, 3, 2, 3, 2]
+		self.tags = []
         
     #takes string of item name
     def equip(self, word):
