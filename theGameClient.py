@@ -20,7 +20,7 @@ capital = False
 
 serverip = "63.225.86.64"
 serverport = 7778
-#serverip = "192.168.1.47"
+serverip = "10.10.20.241"
 
 
 
@@ -114,6 +114,7 @@ def typing(thisevent, eventwanted, typing):
 
 
 Screen = pygame.display.set_mode((screenX, screenY))
+timer = 10
 running = True
 while running:
     Screen.fill(White)
@@ -199,10 +200,13 @@ while running:
             if event.key == K_LSHIFT or event.key == K_RSHIFT:
                 capital = False
     
-    sendinfo(tosend)
-    recieved = myreceive()
-    if recieved != "$":
-        print recieved
+    
+    timer -= 1
+    if timer <= 0:
+        sendinfo(tosend)
+        recieved = myreceive()
+        if recieved != "$":
+            print recieved
     pygame.display.update()
-    clock.tick(40)
+    clock.tick(30)
 print "Done"
