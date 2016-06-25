@@ -6,6 +6,10 @@ import math
 from decimal import *
 getcontext().prec = 4
 
+import pygame
+pygame.init()
+clock = pygame.time.Clock()
+
 #Send $ to pass, send % to start new line
 
 def cuttofour(number):
@@ -80,6 +84,83 @@ class player(object):
                 totalsent = totalsent + sent
         except socket.error:
             self.connected = False
+    
+def addtosend(thing, stuff):
+    if thing == "$" or thing == "":
+        thing = stuff
+    else:
+        thing += "\n"+stuff
+    return thing
+    
+def getwords(input, quant):
+    retreving = True
+    words = []
+    while retreving:
+        word = ""
+        getting = True
+        for i in input:
+            if i == " " and getting:
+                words.append(word)
+                word = ""
+                if len(words)+1 >= quant:
+                    getting = False
+            else:
+                word = word+i
+        words.append(word)
+        if len(words) == quant:
+            return words
+            retreving = False
+        else:
+            prints("Missing "+str(quant-len(words))+" values")
+            input = raw_input("Provide: ")#NEED FIX----------------------------------------------
+    
+class comms(object):
+    def say(self, who, said):
+        global tosend
+        tosend = addtosend(tosend, who.name + ": " + said)
+        
+        
+comm = comms()
+
+def Interpret(word, sayer):
+    global players
+    global comm
+    global tosend
+    if " " in word:
+        #More than one word----------------------------
+        thewords = getwords(word, 2)
+        
+        if thewords[0].lower() == "tell":
+            notsaid = True
+            thesewords = getwords(thewords[1], 2)
+            for i in players:
+                if i.name.lower() == thesewords[0].lower():
+                    notsaid = False
+                    print sayer.name + " told " + i.name + ": " + thesewords[1]
+                    i.tosend = addtosend(i.tosend, sayer.name+" --> you: "+thesewords[1])
+                    sayer.tosend = addtosend(sayer.tosend, "you --> "+i.name+": "+thesewords[1])
+            if notsaid:
+                sayer.tosend = addtosend(sayer.tosend, "player "+thesewords[0]+" not found.")
+            
+        elif thewords[0].lower() == "say":
+            comm.say(sayer, thewords[1])
+            
+        elif thewords[0].lower() == "list":
+            if thewords[1].lower() == "players":
+                sayer.tosend = addtosend(sayer.tosend, "\nAll players:")
+                for i in players:
+                    sayer.tosend = addtosend(sayer.tosend, i.name)
+            else:
+                sayer.tosend = addtosend(sayer.tosend, "Unable to list "+thewords[1]+". Listable:\n-players")
+        else:
+            comm.say(sayer, thewords[1])
+        
+    else:
+        #Only one word---------------------------------
+        if word == "help":
+            sayer.tosend = addtosend(sayer.tosend, "haha not happening yet")
+        else:
+            comm.say(sayer, word)
 
 serverport = 7778
 
@@ -91,7 +172,8 @@ serversocket.bind((socket.gethostname(), serverport))
 #become a server socket
 serversocket.listen(5)
 
-
+    
+#CONNECTING PLAYERS
 connecting = raw_input("Expected turnout:   ")
 players = []
 for i in range(int(connecting)):
@@ -113,23 +195,21 @@ while running:
     tosend = ""
     #Recieve from all players
     for i in players:
-        i.tosend = ""
+        i.tosend = "$"
         recieved = i.myreceive()
         if recieved != "$":
             print recieved
-            #Run interpreter here-----------------------------------------------------------------------
-            tosend += i.name+":  "+recieved
-            #add to tosend
+            Interpret(recieved, i)
         if i.connected == False:
             players.remove(i)
     
     #Send to all players
     for i in players:
-        i.tosend = tosend+"\n"+i.tosend
-        if i.tosend == "\n":
-            i.tosend = "$"
+        if tosend != "":
+            i.tosend = addtosend(i.tosend, tosend)
         i.sendinfo(i.tosend)
     
     if len(players) <= 0:
         running = False
+    clock.tick(3)
 print "Done"
