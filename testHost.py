@@ -6,11 +6,11 @@ import math
 from decimal import *
 getcontext().prec = 4
 
-import pygame
-pygame.init()
-clock = pygame.time.Clock()
+#import pygame
+#pygame.init()
+#clock = pygame.time.Clock()
 
-#Send $ to pass, send % to start new line
+#Send $ to pass, % to disconnect
 
 def cuttofour(number):
     number = str(number)
@@ -152,8 +152,9 @@ def Interpret(word, sayer):
                     sayer.tosend = addtosend(sayer.tosend, i.name)
             else:
                 sayer.tosend = addtosend(sayer.tosend, "Unable to list "+thewords[1]+". Listable:\n-players")
+        
         else:
-            comm.say(sayer, thewords[1])
+            comm.say(sayer, word)
         
     else:
         #Only one word---------------------------------
@@ -163,6 +164,8 @@ def Interpret(word, sayer):
             comm.say(sayer, word)
 
 serverport = 7778
+
+#Get info from previous games here---------------------------------------------------------------------------------------------------
 
 serversocket = socket.socket(
     socket.AF_INET, socket.SOCK_STREAM)
@@ -198,9 +201,14 @@ while running:
         i.tosend = "$"
         recieved = i.myreceive()
         if recieved != "$":
-            print recieved
-            Interpret(recieved, i)
+            if recieved == "%":
+                i.connected = False
+            else:
+                print i.name + recieved
+                Interpret(recieved, i)
         if i.connected == False:
+            tosend = addtosend(tosend, i.name+" has disconnected")
+            
             players.remove(i)
     
     #Send to all players
@@ -211,5 +219,4 @@ while running:
     
     if len(players) <= 0:
         running = False
-    clock.tick(3)
-print "Done"
+    #clock.tick(3)

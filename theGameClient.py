@@ -22,8 +22,15 @@ serverip = "63.225.86.64"
 serverport = 7778
 serverip = "10.10.20.241"
 
-
-
+naming = True
+while naming:
+    name = raw_input("Name:  ")
+    if " " in name:
+        print "No spaces."
+    if "$" in name:
+        print "No dollar signs."
+    else:
+        naming = False
 
 def cuttofour(number):
     number = str(number)
@@ -61,7 +68,7 @@ def sendinfo(typewords):
 def myreceive():
     #Recieve quantity of words
     global s
-    connected = True
+    global connected
     chunks = []
     bytes_recd = 0
     while bytes_recd < 4 and connected:
@@ -92,7 +99,7 @@ s = socket.socket(
 
 s.connect((serverip, serverport))
 print "Connected"
-name = raw_input("Name:  ")
+connected = True
 sendinfo(name)
 print "Waiting for server to start..."
 print myreceive()
@@ -114,9 +121,8 @@ def typing(thisevent, eventwanted, typing):
 
 
 Screen = pygame.display.set_mode((screenX, screenY))
-timer = 10
 running = True
-while running:
+while running and connected:
     Screen.fill(White)
     tosend = "$"
     #Get external (server) input
@@ -183,6 +189,10 @@ while running:
                 typewords += "."
             if event.key == K_COMMA:
                 typewords += ","
+            if event.key == K_MINUS:
+                typewords += "-"
+            if event.key == K_MINUS and capital:
+                typewords += "_"
             if event.key == K_SLASH and capital:
                 typewords += "?"
             
@@ -196,17 +206,17 @@ while running:
                 tosend = typewords
                 #print "Sent "+typewords
                 typewords = ""
+            if event.key == K_ESCAPE:
+                running = False
         if event.type == pygame.KEYUP:
             if event.key == K_LSHIFT or event.key == K_RSHIFT:
                 capital = False
     
     
-    timer -= 1
-    if timer <= 0:
-        sendinfo(tosend)
-        recieved = myreceive()
-        if recieved != "$":
-            print recieved
+    sendinfo(tosend)
+    recieved = myreceive()
+    if recieved != "$":
+        print recieved
     pygame.display.update()
-    clock.tick(30)
+    clock.tick(60)
 print "Done"
