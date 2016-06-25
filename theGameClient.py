@@ -20,7 +20,7 @@ capital = False
 
 serverip = "63.225.86.64"
 serverport = 7778
-serverip = "10.10.20.241"
+#serverip = "10.10.20.241"
 
 naming = True
 while naming:
@@ -123,21 +123,20 @@ Screen = pygame.display.set_mode((screenX, screenY))
 running = True
 typelist = []
 while running and connected:
-
     Screen.fill(White)
     tosend = "$"
-    #Get external (server) input
-    
+    #Display
     dialog = font.render("The Game Client", True, Black)
     Screen.blit(dialog, [20,0])
     dialog = font.render("Connected as: "+name, True, Black)
     Screen.blit(dialog, [20,20])
-    dialog = font.render(typewords, True, Black)
-    Screen.blit(dialog, [0,580])
+    pygame.draw.line(Screen, Black, [0, 37], [600, 37], 1)
     for i in range(len(typelist)):
         Screen.blit(typelist[i], [20,(i * 20) + 40])
-		
-		
+    pygame.draw.line(Screen, Black, [0, 576], [600, 576], 1)
+    pygame.draw.line(Screen, White, [0, 588], [600, 588], 24)
+    dialog = font.render(typewords, True, Black)
+    Screen.blit(dialog, [0,580])
     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -210,7 +209,6 @@ while running and connected:
                 #--Send words-------------------------------------------------------------------------------------------------
                 tosend = typewords
                 #print "Sent "+typewords
-                typelist.append(font.render(typewords, True, Black))
                 typewords = ""
             if event.key == K_ESCAPE:
                 running = False
@@ -223,6 +221,7 @@ while running and connected:
     recieved = myreceive()
     if recieved != "$":
         print recieved
+        typelist.insert(0, font.render(recieved, True, Black))
     pygame.display.update()
     clock.tick(60)
 print "Done"
