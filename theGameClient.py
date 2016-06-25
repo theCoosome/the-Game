@@ -20,7 +20,7 @@ capital = False
 
 serverip = "63.225.86.64"
 serverport = 7778
-serverip = "10.10.20.241"
+#serverip = "10.10.20.241"
 
 
 
