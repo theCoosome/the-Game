@@ -35,7 +35,28 @@ class player(object):
         self.connected = True
         self.tosend = ""
         #game stuff
+        self.catag = "Human"
         self.name = "Player"
+        self.hp = 100
+        self.bsmaxhp = 100
+        self.maxhp = 100
+        self.bsatk = 8
+        self.atk = 8
+        self.bsdef = 0
+        self.dfn = 0
+        self.bsddev = 10
+        self.ddev = 10
+        self.bshealval = 1
+        self.healval = 1
+        self.hdev = 3
+        self.bsagil = [18, 100]
+        self.agil = [15, 100]
+        self.lvl = 1
+        self.sane = 8
+        self.trueSane = 0
+        self.minions = []
+        self.minionTree = []
+        
         
     def myreceive(self):
         #Recieve quantity of words
