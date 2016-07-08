@@ -189,8 +189,6 @@ while running and connected:
 				typewords += "9"
 			if event.key == K_0:
 				typewords += "0"
-			if event.key == K_COLON:
-				typewords += ":"
 			if event.key == K_EQUALS:
 				typewords += "="
 			if event.key == K_PERIOD:
@@ -199,6 +197,8 @@ while running and connected:
 				typewords += ","
 			if event.key == K_SEMICOLON:
 				typewords += ";"
+			if event.key == K_SEMICOLON and capital:
+				typewords += ":"
 			if event.key == K_LESS:
 				typewords += "<"
 			if event.key == K_GREATER:
