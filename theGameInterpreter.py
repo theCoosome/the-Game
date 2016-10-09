@@ -73,7 +73,7 @@ class Item(object):
         self.healmod = healmod
         self.sanemod = sanemod
         #equip regions, if it takes it up
-        self.equipRegions = eq
+        self.eq = eq
 
 itemframes, items = [], []
 itemframes.append([0, 0, 1, 0, 0, -1, 1, [0, 1, 0, 0, 0], "Clothing", "Shirt"])
@@ -102,7 +102,7 @@ class player(object):
 		
 		#Speccialties are skills the player is good at, such as mining, proficiency with a weapon, or house building. 
 		#It is in the form of <name of skill>:<level of skill>
-		self.specialties = {}
+		#self.specialties = {}
 		#<type> <amount>
 		#self.resistances = {}  Not yet, will do later
 		#Hp is actually the blood level of the player
@@ -138,6 +138,7 @@ class player(object):
         self.bssane = 8
         self.sane = 8
         #other
+        self.location = [] #this is important, yes yes very
         self.minions = []
         self.minionTree = []
         self.inventory = []
@@ -172,8 +173,8 @@ class player(object):
         for i in self.equipped:
             if word.lower() == i.name.lower() or word.lower() == i.title.lower():
                 failedName = False
-                equipped.remove(i)
-                inventory.append(i)
+                self.equipped.remove(i)
+                self.inventory.append(i)
                 tosend = addtosend(tosend, self.name+" unequipped "+i.title)
                 break
         if failedName:
@@ -184,6 +185,7 @@ class player(object):
         #recalculate all stats based on items and anything else
         atkmod, ddevmod, dfnmod, agilmod, hpmod, healmod, sanemod = 0, 0, 0, 0, 0, 0, 0
         self.equipRegions = [0, 0, 0, 0, 0]
+        redo = False
         for i in self.equipped:
             atkmod += i.atkmod
             ddevmod += i.ddevmod
@@ -192,14 +194,27 @@ class player(object):
             hpmod += i.hpmod
             healmod += i.healmod
             sanemod += i.sanemod
-            self.equipRegions += i.eq
-        self.atk = self.bsatk+atkmod
-        self.ddev = self.bsddev+ddevmod
-        self.dfn = self.bsdfn+dfnmod
-        self.agil = [self.bsagil+agilmod, 100]
-        self.maxhp = self.bsmaxhp+hpmod
-        self.heal = self.bsheal+healmod
-        self.sane = self.bssane+sanemod
+            self.equipRegions = [self.equipRegions[0]+i.eq[0], self.equipRegions[1]+i.eq[1], self.equipRegions[2]+i.eq[2], self.equipRegions[3]+i.eq[3], self.equipRegions[4]+i.eq[4]]
+            #Be sure you can still equip it!
+            for x in range(5):
+                #print self.equipRegions[i]
+                #print self.maxRegions[i]
+                if self.equipRegions[x] > self.maxRegions[x]:
+                    global tosend
+                    tosend = addtosend(tosend, self.name+" has dropped "+i.title+"!")
+                    redo = True
+                    self.equipped.remove(i)
+                    #'drop' item into the location of the player
+        if redo:
+            self.reStat()
+        else:
+            self.atk = self.bsatk+atkmod
+            self.ddev = self.bsddev+ddevmod
+            self.dfn = self.bsdfn+dfnmod
+            self.agil = [self.bsagil+agilmod, 100]
+            self.maxhp = self.bsmaxhp+hpmod
+            self.heal = self.bsheal+healmod
+            self.sane = self.bssane+sanemod
 
     
 players = []
@@ -349,18 +364,18 @@ def Interpret(word, sayer):
             else:
                 if thesewords[0].lower() == "item":
                     multiple = 11
-                    morewords = getwords(thesewords[1], 11)
+                    morewords = getwords(thesewords[1], 15)
                     if morewords[0] == "$":
-                        morewords = getwords(thesewords[1], 10)
+                        morewords = getwords(thesewords[1], 14)
                         multiple = 10
                         if morewords[0] == "$":
                             sayer.tosend = addtosend(sayer.tosend, "Only "+str(morewords[1])+" values given, "+morewords[2])
                             multiple = 0
                     if multiple == 11:
-                        itemframes.append([morewords[0], morewords[1], morewords[2], morewords[3], morewords[4], morewords[5], morewords[6], morewords[7], morewords[8], morewords[9], morewords[10]])
+                        itemframes.append([morewords[0], morewords[1], morewords[2], morewords[3], morewords[4], morewords[5], morewords[6], [morewords[7], morewords[8], morewords[9], morewords[10], morewords[11]], morewords[12], morewords[13], morewords[14]])
                         sayer.tosend = addtosend(sayer.tosend, "Created item frame "+morewords[8]+" : "+morewords[9]+" : "+morewords[10])
                     elif multiple == 10:
-                        itemframes.append([morewords[0], morewords[1], morewords[2], morewords[3], morewords[4], morewords[5], morewords[6], morewords[7], morewords[8], morewords[9]])
+                        itemframes.append([morewords[0], morewords[1], morewords[2], morewords[3], morewords[4], morewords[5], morewords[6], [morewords[7], morewords[8], morewords[9], morewords[10], morewords[11]], morewords[12], morewords[13]])
                         sayer.tosend = addtosend(sayer.tosend, "Created item frame "+morewords[8]+" : "+morewords[9])
         else:
             comm.say(sayer, word)
